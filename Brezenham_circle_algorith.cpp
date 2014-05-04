@@ -1,77 +1,47 @@
-#include<graphics.h>
-#include<process.h>
-#include <locale.h>
 #include<iostream>
-#include<cmath>
+#include<graphics.h>
 
-void Graph_Init();
-void Brezenham_circle();
+using namespace std;
 
-int main() {
-    setlocale(LC_ALL, "RUS");
-    Graph_Init();
-    Brezenham_circle();
+void drawCircle(int x, int y, int xc, int yc);
+
+int main()
+{
+	int gd = DETECT, gm;
+	int r, xc, yc, pk, x, y;
+	initgraph(&gd, &gm, "");
+	cout<<"Enter the center co-ordinates" << endl;
+	cin>>xc>>yc;
+	cout<<"Enter the radius of circle" << endl;
+	cin>>r;
+	pk = 3 - 2*r;
+	x=0; y = r;
+	drawCircle(x,y,xc,yc);
+	while(x < y)
+	{
+		if(pk <= 0)
+		{
+			pk = pk + (4*x) + 6;
+			drawCircle(++x,y,xc,yc);
+		}
+		else
+		{
+			pk = pk + (4*(x-y)) + 10;
+			drawCircle(++x,--y,xc,yc);
+		}
+	}
     system("PAUSE");
     closegraph();
 }
 
-void Graph_Init() {
-    int g_driver = DETECT, g_mode, ErrorCode;
-    initgraph(&g_driver, &g_mode, "");
-    ErrorCode = graphresult();
-    if (ErrorCode != grOk) {
-        std::cout << " graphics error! " << grapherrormsg(ErrorCode) << std::endl;
-        std::cout << " press any key to start! " << std::endl;
-        exit(1);
-    }
-}
-
-void Brezenham_circle() {
-int radius, delta, err, sigma, sigma_strih;
-    int x, y;
-    int x1, y1;
-    std::cout << "¬ведите радиус окружности: ";
-    std::cin >> radius;
-    std::cout << "¬ведите координаты центра: ";
-    std::cin >> x >> y;
-    x1 = x;
-    y1 = y + radius;
-    delta = 2 * (1 - radius);
-    err = x1; //??????????????
-    putpixel(x1, y1, 2);
-    while (y1 > err) {
-        putpixel(x1, y1, 2);
-        if (delta < 0) {
-            delta = 2*delta + 2*y1 - 1;
-            sigma = 2 * (delta + y1) - 1;
-            if (sigma <= 0) {
-                --x1;
-                delta = delta + 2*x1 + 1;
-            }
-            else {
-                ++x1;
-                --y1;
-                delta = delta + 2*x1 + 2*y1 + 2;
-            }
-        }
-        else if (delta > 0){
-            delta = 2*delta - 2*x1 - 1;
-            sigma_strih = 2 * (delta - x1) - 1;
-            if (sigma_strih <= 0) {
-                ++x1;
-                --y1;
-                delta = delta + 2*x1 + 2*y1 + 2;
-            }
-            else {
-                --y1;
-                delta = delta - 2*y1 + 1;
-            }
-        }
-        else {
-            ++x1;
-            --y1;
-            delta = delta + 2*x1 + 2*y1 + 2;
-        }
-    ++err;
-    }
+void drawCircle(int x, int y, int xc, int yc)
+{
+	putpixel(x+xc,y+yc,1);
+	putpixel(-x+xc,y+yc,2);
+	putpixel(x+xc, -y+yc,3);
+	putpixel(-x+xc, -y+yc, 4);
+	putpixel(y+xc, x+yc, 5);
+	putpixel(y+xc, -x+yc, 6);
+	putpixel(-y+xc, x+yc, 7);
+	putpixel(-y+xc, -x+yc, 8);
 }
