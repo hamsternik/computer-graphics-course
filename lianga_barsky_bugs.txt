@@ -1,5 +1,0 @@
-In this document i will describe all bugs, that my realization of lianga-barsky algorithm has now.
-1. Program crashed, when try to draw a line, that passes perpendicular to any rectangle side.
-  /* DETAILS */
-2. Part of line, that is located in drawing window part, doesn't clipped and, of course, doesnt change own color. 
-  /* DETAILS */
